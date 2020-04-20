@@ -6,16 +6,42 @@ class App
 {
     public function __construct()
     {
-        //Add rendered modules to content
 
-        //Remove mod-* posttypes from indexable results. 
+        //Check for modularity
+        if(!class_exists('\Modularity\App')) {
+            add_action('admin_notices', array($this, 'displayAdminNotice'));
+            return;
+        }
 
-        //add_filter('AlgoliaIndex/Record', array($this, 'addModularityModule')); 
+        //Add rendered post module content to post content 
+        add_filter('AlgoliaIndex/Record', array($this, 'addModularityModule')); 
+
+        //Remove posttypes from modularity
         add_filter('AlgoliaIndex/IndexablePostTypes', array($this, 'removeModularityPostTypes')); 
     }
 
-    public function addModularityModule () {
+    public function displayAdminNotice() {
+        echo '<div class="notice notice-error"><p>';
+        _e(
+            "Modularity not found, algolia modularity addon will have no effect. 
+            Install Modularity or disable algolia modularity addon.",
+            'algolia-index-modularity-addon'
+        );
+        echo '</p></div>';
+    }
 
+    public function addModularityModule ($result, $postId) {
+
+        //Add content if not exists
+        if(!isset($result['content'])) {
+            $result['content'] = ""; 
+        }
+
+        //Add modules to content
+        $result['content'] = $result['content'] . "\r\n" . $this->getRenderedPostModules($postId); 
+
+        //Return index record, with module content. 
+        return $result; 
     }
 
     /**
@@ -36,5 +62,47 @@ class App
             return $filteredResult; //Return filtered
         }
         return $postTypes; //Not valid, return original
+    }
+
+
+    /**
+     * Render all modules on post
+     * @param  WP_Post $post
+     * @return string
+     */
+
+    public function getRenderedPostModules($postId)
+    {
+        if (!is_numeric($postId)) {
+            return;
+        }
+
+        $modules = \Modularity\Editor::getPostModules($postId);
+        $onlyModules = array();
+
+        // Normalize modules array
+        foreach ($modules as $sidebar => $item) {
+            if (!isset($item['modules']) || count($item['modules']) === 0) {
+                continue;
+            }
+
+            $onlyModules = array_merge($onlyModules, $item['modules']);
+        }
+
+        // Render modules and append to post content
+        $rendered = "<br><br>";
+        foreach ($onlyModules as $module) {
+            if ($module->post_type === 'mod-wpwidget') {
+                continue;
+            }
+
+            $markup = \Modularity\App::$display->outputModule($module, array('edit_module' => false), array(), false);
+
+            if(!empty($markup)) {
+                $rendered .= " " . $markup;
+            }
+        }
+
+        return $rendered;
     }
 }
