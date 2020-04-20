@@ -1,7 +1,3 @@
-# Wordpress Plugin Boilderplate
+# Algolia Index Modularity Addon
 
-Copy the contents of the folder and run the below command, from the plugin folder, in your terminal to run the setup guide.
-
-```
-sh setup.sh
-```
+Adds support for modularity indexing to algolia-index plugin. The algolia-index master plugin is required to run this plugin [https://github.com/helsingborg-stad/algolia-index-modularity-addon]. 
