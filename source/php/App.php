@@ -6,7 +6,6 @@ class App
 {
     public function __construct()
     {
-
         //Check for modularity & algolia index plugins
         add_action('plugins_loaded', function() {
             if(!class_exists('\Modularity\App') || !class_exists('\AlgoliaIndex\App')) {
@@ -21,6 +20,11 @@ class App
         add_filter('AlgoliaIndex/IndexablePostTypes', array($this, 'removeModularityPostTypes')); 
     }
 
+    /**
+     * Display admin notice (missing plugins error)
+     *
+     * @return void
+     */
     public function displayAdminNotice() {
         echo '<div class="notice notice-error"><p>';
         _e(
@@ -31,6 +35,14 @@ class App
         echo '</p></div>';
     }
 
+    /**
+     * Add modularity content to content field
+     *
+     * @param   array       $result     The stuff to be indexed. 
+     * @param   integer     $postId     Current post id to index
+     * 
+     * @return  array       $result     The stuff to be indexed, with modularity content. 
+     */
     public function addModularityModule ($result, $postId) {
 
         //Add content if not exists
@@ -42,7 +54,7 @@ class App
         $result['content'] = $result['content'] . "\r\n" . $this->getRenderedPostModules($postId); 
 
         //Return index record, with module content. 
-        return $result; 
+        return $result;
     }
 
     /**
@@ -65,13 +77,11 @@ class App
         return $postTypes; //Not valid, return original
     }
 
-
     /**
      * Render all modules on post
-     * @param  WP_Post $post
+     * @param  integer $postId
      * @return string
      */
-
     public function getRenderedPostModules($postId)
     {
         if (!is_numeric($postId)) {
@@ -100,7 +110,7 @@ class App
             $markup = \Modularity\App::$display->outputModule($module, array('edit_module' => false), array(), false);
 
             if(!empty($markup)) {
-                $rendered .= " " . $markup;
+                $rendered .= "\r\n" . $markup;
             }
         }
 
