@@ -11,13 +11,13 @@ class App
             if(!class_exists('\Modularity\App') || !class_exists('\AlgoliaIndex\App')) {
                 add_action('admin_notices', array($this, 'displayAdminNotice'));
             }
-        }); 
+        });
 
         //Add rendered post module content to post content 
-        add_filter('AlgoliaIndex/Record', array($this, 'addModularityModule')); 
+        add_filter('AlgoliaIndex/Record', array($this, 'addModularityModule'), 10, 2); 
 
         //Remove posttypes from modularity
-        add_filter('AlgoliaIndex/IndexablePostTypes', array($this, 'removeModularityPostTypes')); 
+        add_filter('AlgoliaIndex/IndexablePostTypes', array($this, 'removeModularityPostTypes'), 10, 1); 
     }
 
     /**
@@ -101,16 +101,22 @@ class App
         }
 
         // Render modules and append to post content
-        $rendered = "<br><br>";
+        $rendered = "\r\n\r\n";
         foreach ($onlyModules as $module) {
             if ($module->post_type === 'mod-wpwidget') {
                 continue;
             }
 
-            $markup = \Modularity\App::$display->outputModule($module, array('edit_module' => false), array(), false);
+            //Get output for module
+            $output = \Modularity\App::$display->outputModule(
+                $module, 
+                array('edit_module' => false), 
+                array(), false
+            );
 
-            if(!empty($markup)) {
-                $rendered .= "\r\n" . $markup;
+            //Concat to end result
+            if(!empty($output)) {
+                $rendered .= "\r\n" . strip_tags($output);
             }
         }
 
