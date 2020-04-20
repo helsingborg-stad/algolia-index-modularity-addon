@@ -7,11 +7,12 @@ class App
     public function __construct()
     {
 
-        //Check for modularity
-        if(!class_exists('\Modularity\App')) {
-            add_action('admin_notices', array($this, 'displayAdminNotice'));
-            return;
-        }
+        //Check for modularity & algolia index plugins
+        add_action('plugins_loaded', function() {
+            if(!class_exists('\Modularity\App') || !class_exists('\AlgoliaIndex\App')) {
+                add_action('admin_notices', array($this, 'displayAdminNotice'));
+            }
+        }); 
 
         //Add rendered post module content to post content 
         add_filter('AlgoliaIndex/Record', array($this, 'addModularityModule')); 
@@ -23,8 +24,8 @@ class App
     public function displayAdminNotice() {
         echo '<div class="notice notice-error"><p>';
         _e(
-            "Modularity not found, algolia modularity addon will have no effect. 
-            Install Modularity or disable algolia modularity addon.",
+            "Modularity or Algolia Index not found, Algolia Modularity Addon will have no effect. 
+            Install Modularity and Algolia Index or disable Algolia Modularity Addon.",
             'algolia-index-modularity-addon'
         );
         echo '</p></div>';
