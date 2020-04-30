@@ -2,6 +2,7 @@
 {
   "name": "helsingborg-stad/algolia-index-modularity-addon",
   "description": "https://github.com/helsingborg-stad/algolia-index-modularity-addon",
+  "type": "wordpress-plugin",
   "license": "MIT",
   "authors": [
       {
