@@ -51,7 +51,10 @@ class App
         }
 
         //Add modules to content
-        $result['content'] = $result['content'] . "\r\n" . $this->getRenderedPostModules($postId); 
+        $result['content'] = $result['content'] . "\r\n" . mb_convert_encoding(
+            $this->getRenderedPostModules($postId), 
+            'UTF-8', 'UTF-8'
+        );
 
         //Return index record, with module content. 
         return $result;
