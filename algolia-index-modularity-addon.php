@@ -24,14 +24,11 @@ define('ALGOLIAINDEXMODADDON_TEMPLATE_PATH', ALGOLIAINDEXMODADDON_PATH . 'templa
 
 load_plugin_textdomain('algolia-index-modularity-addon', false, plugin_basename(dirname(__FILE__)) . '/languages');
 
-require_once ALGOLIAINDEXMODADDON_PATH . 'source/php/Vendor/Psr4ClassLoader.php';
+// Autoload from plugin
+if (file_exists(ALGOLIAINDEXMODADDON_PATH . 'vendor/autoload.php')) {
+    require_once ALGOLIAINDEXMODADDON_PATH . 'vendor/autoload.php';
+}
 require_once ALGOLIAINDEXMODADDON_PATH . 'Public.php';
-
-// Instantiate and register the autoloader
-$loader = new AlgoliaIndexModularityAddon\Vendor\Psr4ClassLoader();
-$loader->addPrefix('AlgoliaIndexModularityAddon', ALGOLIAINDEXMODADDON_PATH);
-$loader->addPrefix('AlgoliaIndexModularityAddon', ALGOLIAINDEXMODADDON_PATH . 'source/php/');
-$loader->register();
 
 // Start application
 new AlgoliaIndexModularityAddon\App();

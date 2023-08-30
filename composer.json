@@ -22,5 +22,10 @@
       }
   ],
   "require": {
+  },
+  "autoload": {
+    "psr-4": {
+      "AlgoliaIndexModularityAddon\\": "source/php/"
+    }
   }
 }
