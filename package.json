@@ -1,21 +1,20 @@
 {
-  "name": "algolia-index-modularity-addon",
-  "version": "1.0.0",
-  "description": "Adds support for modularity indexing to algolia-index plugin.",
-  "main": "",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/helsingborg-stad/algolia-index-modularity-addon.git"
-  },
-  "author": "Sebastian Thulin",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/helsingborg-stad/algolia-index-modularity-addon/issues"
-  },
-  "homepage": "https://github.com/helsingborg-stad/algolia-index-modularity-addon",
-  "devDependencies": {
-  }
+    "name": "algolia-index-modularity-addon",
+    "version": "2.0.0",
+    "description": "Adds support for modularity indexing to algolia-index plugin.",
+    "main": "",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/helsingborg-stad/algolia-index-modularity-addon.git"
+    },
+    "author": "Sebastian Thulin",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/helsingborg-stad/algolia-index-modularity-addon/issues"
+    },
+    "homepage": "https://github.com/helsingborg-stad/algolia-index-modularity-addon",
+    "devDependencies": []
 }
