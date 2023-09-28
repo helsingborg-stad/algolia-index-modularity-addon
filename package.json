@@ -4,6 +4,7 @@
     "description": "Adds support for modularity indexing to algolia-index plugin.",
     "main": "",
     "scripts": {
+        "build": "",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "repository": {
