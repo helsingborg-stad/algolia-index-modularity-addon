@@ -1,6 +1,6 @@
 {
     "name": "algolia-index-modularity-addon",
-    "version": "3.0.3",
+    "version": "3.0.4",
     "description": "Adds support for modularity indexing to algolia-index plugin.",
     "main": "",
     "scripts": {
