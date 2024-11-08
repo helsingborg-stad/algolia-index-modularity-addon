@@ -119,6 +119,7 @@ class App
 
             //Concat to end result
             if(!empty($output)) {
+                $output = preg_replace('/<[^>]+>/', '', $output);
                 $rendered .= "\r\n" . strip_tags($output);
             }
         }
