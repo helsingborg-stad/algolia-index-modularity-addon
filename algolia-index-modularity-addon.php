@@ -4,7 +4,7 @@
  * Plugin Name:       Algolia Index Modularity Addon
  * Plugin URI:        https://github.com/helsingborg-stad/algolia-index-modularity-addon
  * Description:       Adds support for modularity indexing to algolia-index plugin.
- * Version: 3.0.5
+ * Version: 3.1.0
  * Author:            Sebastian Thulin
  * Author URI:        https://github.com/sebastianthulin
  * License:           MIT
