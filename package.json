@@ -16,6 +16,5 @@
     "bugs": {
         "url": "https://github.com/helsingborg-stad/algolia-index-modularity-addon/issues"
     },
-    "homepage": "https://github.com/helsingborg-stad/algolia-index-modularity-addon",
-    "devDependencies": []
+    "homepage": "https://github.com/helsingborg-stad/algolia-index-modularity-addon"
 }
