@@ -25,6 +25,5 @@
         "psr-4": {
             "AlgoliaIndexModularityAddon\\": "source/php/"
         }
-    },
-    "version": "3.1.0"
+    }
 }
