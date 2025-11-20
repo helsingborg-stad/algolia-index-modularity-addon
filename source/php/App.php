@@ -7,17 +7,17 @@ class App
     public function __construct()
     {
         //Check for modularity & algolia index plugins
-        add_action('plugins_loaded', function() {
-            if(!class_exists('\Modularity\App') || !class_exists('\AlgoliaIndex\App')) {
-                add_action('admin_notices', array($this, 'displayAdminNotice'));
+        add_action('plugins_loaded', function () {
+            if (!class_exists('\Modularity\App') || !class_exists('\AlgoliaIndex\App')) {
+                add_action('admin_notices', [$this, 'displayAdminNotice']);
             }
         });
 
-        //Add rendered post module content to post content 
-        add_filter('AlgoliaIndex/Record', array($this, 'addModularityModule'), 10, 2); 
+        //Add rendered post module content to post content
+        add_filter('AlgoliaIndex/Record', [$this, 'addModularityModule'], 10, 2);
 
         //Remove posttypes from modularity
-        add_filter('AlgoliaIndex/IndexablePostTypes', array($this, 'removeModularityPostTypes'), 10, 1); 
+        add_filter('AlgoliaIndex/IndexablePostTypes', [$this, 'removeModularityPostTypes'], 10, 1);
     }
 
     /**
@@ -25,12 +25,13 @@ class App
      *
      * @return void
      */
-    public function displayAdminNotice() {
+    public function displayAdminNotice()
+    {
         echo '<div class="notice notice-error"><p>';
         _e(
-            "Modularity or Algolia Index not found, Algolia Modularity Addon will have no effect. 
-            Install Modularity and Algolia Index or disable Algolia Modularity Addon.",
-            'algolia-index-modularity-addon'
+            'Modularity or Algolia Index not found, Algolia Modularity Addon will have no effect. 
+            Install Modularity and Algolia Index or disable Algolia Modularity Addon.',
+            'algolia-index-modularity-addon',
         );
         echo '</p></div>';
     }
@@ -38,25 +39,23 @@ class App
     /**
      * Add modularity content to content field
      *
-     * @param   array       $result     The stuff to be indexed. 
+     * @param   array       $result     The stuff to be indexed.
      * @param   integer     $postId     Current post id to index
-     * 
-     * @return  array       $result     The stuff to be indexed, with modularity content. 
+     *
+     * @return  array       $result     The stuff to be indexed, with modularity content.
      */
-    public function addModularityModule ($result, $postId) {
-
+    public function addModularityModule($result, $postId)
+    {
         //Add content if not exists
-        if(!isset($result['content'])) {
-            $result['content'] = ""; 
+        if (!isset($result['content'])) {
+            $result['content'] = '';
         }
 
         //Add modules to content
-        $result['content'] = $result['content'] . "\r\n" . mb_convert_encoding(
-            $this->getRenderedPostModules($postId), 
-            'UTF-8', 'UTF-8'
-        );
+        $result['content'] =
+            $result['content'] . "\r\n" . mb_convert_encoding($this->getRenderedPostModules($postId), 'UTF-8', 'UTF-8');
 
-        //Return index record, with module content. 
+        //Return index record, with module content.
         return $result;
     }
 
@@ -66,14 +65,17 @@ class App
      * @param array $postTypes
      * @return array $postTypes
      */
-    public function removeModularityPostTypes ($postTypes) {
-        //Remove mod-* posttypes 
-        if(is_array($postTypes) && !empty($postTypes)) {
-            $filteredResult = array();
-            foreach($postTypes as $postType) {
-                if(substr($postType, 0, 4) != "mod-") {
-                    $filteredResult[] = $postType;  
+    public function removeModularityPostTypes($postTypes)
+    {
+        //Remove mod-* posttypes
+        if (is_array($postTypes) && !empty($postTypes)) {
+            $filteredResult = [];
+            foreach ($postTypes as $postType) {
+                if (substr($postType, 0, 4) == 'mod-') {
+                    continue;
                 }
+
+                $filteredResult[] = $postType;
             }
             return $filteredResult; //Return filtered
         }
@@ -92,7 +94,7 @@ class App
         }
 
         $modules = \Modularity\Editor::getPostModules($postId);
-        $onlyModules = array();
+        $onlyModules = [];
 
         // Normalize modules array
         foreach ($modules as $sidebar => $item) {
@@ -111,14 +113,10 @@ class App
             }
 
             //Get output for module
-            $output = \Modularity\App::$display->outputModule(
-                $module, 
-                array('edit_module' => false), 
-                array(), false
-            );
+            $output = \Modularity\App::$display->outputModule($module, ['edit_module' => false], [], false);
 
             //Concat to end result
-            if(!empty($output)) {
+            if (!empty($output)) {
                 $output = preg_replace('/<[^>]+>/', '', $output);
                 $rendered .= "\r\n" . strip_tags($output);
             }
